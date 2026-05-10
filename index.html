@@ -7,8 +7,9 @@
     <style>
         body {
             margin: 0;
+            padding: 0;
             font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #ff0066, #ff3399);
+            background: #ff007f;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -16,41 +17,35 @@
             overflow: hidden;
         }
         .San_Valentin {
-            position: relative;
-            width: 90%;
-            max-width: 600px;
-            background: #f5e6d3;
-            padding: 40px;
+            background: #fdf5e6;
+            padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             text-align: center;
-            z-index: 10;
+            width: 85%;
+            max-width: 500px;
+            position: relative;
+            z-index: 2;
         }
-        h1 { color: #cc0066; }
-        p { font-size: 18px; color: #444; }
+        h1 { color: #d10069; margin-bottom: 15px; font-size: 1.8rem; }
+        p { color: #5d4037; font-size: 1.1rem; margin: 8px 0; }
         #contador {
             font-weight: bold;
-            font-size: 1.4rem;
-            margin-top: 20px;
-            color: #cc0066;
+            font-size: 1.2rem;
+            margin: 20px 0;
+            color: #d10069;
+            min-height: 1.5em;
         }
-        /* Corazón y tronco */
-        .tree {
-            margin-top: 30px;
-            position: relative;
-            display: inline-block;
-            width: 100px;
-            height: 120px;
-        }
-        .heart {
+        .heart-main {
             width: 80px;
             height: 80px;
             background: red;
             position: relative;
             transform: rotate(-45deg);
+            margin: 40px auto 20px;
             animation: latido 1s infinite;
         }
-        .heart:before, .heart:after {
+        .heart-main:before, .heart-main:after {
             content: "";
             width: 80px;
             height: 80px;
@@ -58,14 +53,15 @@
             border-radius: 50%;
             position: absolute;
         }
-        .heart:before { top: -40px; left: 0; }
-        .heart:after { left: 40px; top: 0; }
+        .heart-main:before { top: -40px; left: 0; }
+        .heart-main:after { left: 40px; top: 0; }
         .trunk {
-            width: 15px;
-            height: 40px;
+            width: 12px;
+            height: 35px;
             background: #8B4513;
             margin: 0 auto;
             position: relative;
+            z-index: -1;
             top: -10px;
         }
         @keyframes latido {
@@ -73,10 +69,9 @@
             50% { transform: rotate(-45deg) scale(1.1); }
             100% { transform: rotate(-45deg) scale(1); }
         }
-        .corazon-flotante {
+        .corazon-vuelo {
             position: absolute;
             color: white;
-            font-size: 20px;
             bottom: -50px;
             animation: flotar 5s linear infinite;
         }
@@ -93,34 +88,50 @@
     <p>Si pudiera elegir un lugar seguro, sería a tu lado.</p>
     <p>Cuanto más tiempo estoy contigo más te amo.</p>
     <p>Mi amor por ti comenzó hace...</p>
-    <div id="contador">Calculando tiempo...</div>
+    
+    <div id="contador">Cargando...</div>
 
-    <div class="tree">
-        <div class="heart"></div>
-        <div class="trunk"></div>
-    </div>
+    <div class="heart-main"></div>
+    <div class="trunk"></div>
 </div>
 
 <script>
-    // FECHA DE INICIO: 21 de Junio de 2025
-    const fechaInicio = new Date(2025, 5, 21, 0, 0, 0); 
-
     function actualizarContador() {
-        const ahora = new Date();
+        const fechaInicio = new Date('June 21, 2025 00:00:00').getTime();
+        const ahora = new Date().getTime();
         const diferencia = ahora - fechaInicio;
 
+        if (isNaN(diferencia)) {
+            document.getElementById("contador").innerHTML = "Error en fecha";
+            return;
+        }
+
         const d = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-        const h = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
-        const m = Math.floor((diferencia / (1000 * 60)) % 60);
-        const s = Math.floor((diferencia / 1000) % 60);
+        const h = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diferencia % (1000 * 60)) / 1000);
 
         document.getElementById("contador").innerHTML = 
             d + " días " + h + " horas " + m + " minutos " + s + " segundos ❤️";
     }
 
-    setInterval(actualizarContador, 1000);
+    // Iniciar inmediatamente y luego cada segundo
     actualizarContador();
+    setInterval(actualizarContador, 1000);
 
+    // Corazones de fondo
     function crearCorazon() {
         const c = document.createElement("div");
-        c.classList.add("corazon-flotante");
+        c.className = "corazon-vuelo";
+        c.innerHTML = "❤️";
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.fontSize = (Math.random() * 20 + 10) + "px";
+        c.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        document.body.appendChild(c);
+        setTimeout(() => { c.remove(); }, 5000);
+    }
+    setInterval(crearCorazon, 400);
+</script>
+
+</body>
+</html>
