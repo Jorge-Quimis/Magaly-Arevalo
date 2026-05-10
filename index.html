@@ -1,46 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para el Amor de Mi Vida ❤️</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #ff0066, #ff3399);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .San_Valentin {
+            position: relative;
+            width: 90%;
+            max-width: 600px;
+            background: #f5e6d3;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            text-align: center;
+            z-index: 10;
+        }
+        h1 { color: #cc0066; }
+        p { font-size: 18px; color: #444; }
+        #contador {
+            font-weight: bold;
+            font-size: 1.4rem;
+            margin-top: 20px;
+            color: #cc0066;
+        }
+        /* Corazón y tronco */
+        .tree {
+            margin-top: 30px;
+            position: relative;
+            display: inline-block;
+            width: 100px;
+            height: 120px;
+        }
+        .heart {
+            width: 80px;
+            height: 80px;
+            background: red;
+            position: relative;
+            transform: rotate(-45deg);
+            animation: latido 1s infinite;
+        }
+        .heart:before, .heart:after {
+            content: "";
+            width: 80px;
+            height: 80px;
+            background: red;
+            border-radius: 50%;
+            position: absolute;
+        }
+        .heart:before { top: -40px; left: 0; }
+        .heart:after { left: 40px; top: 0; }
+        .trunk {
+            width: 15px;
+            height: 40px;
+            background: #8B4513;
+            margin: 0 auto;
+            position: relative;
+            top: -10px;
+        }
+        @keyframes latido {
+            0% { transform: rotate(-45deg) scale(1); }
+            50% { transform: rotate(-45deg) scale(1.1); }
+            100% { transform: rotate(-45deg) scale(1); }
+        }
+        .corazon-flotante {
+            position: absolute;
+            color: white;
+            font-size: 20px;
+            bottom: -50px;
+            animation: flotar 5s linear infinite;
+        }
+        @keyframes flotar {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(-110vh); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="San_Valentin">
+    <h1>Para el amor de mi vida ❤️</h1>
+    <p>Si pudiera elegir un lugar seguro, sería a tu lado.</p>
+    <p>Cuanto más tiempo estoy contigo más te amo.</p>
+    <p>Mi amor por ti comenzó hace...</p>
+    <div id="contador">Calculando tiempo...</div>
+
+    <div class="tree">
+        <div class="heart"></div>
+        <div class="trunk"></div>
+    </div>
+</div>
+
 <script>
-// La fecha exacta en que comenzó su amor
-// Nota: En JavaScript los meses empiezan en 0 (0=Ene, 5=Jun)
-const fechaInicio = new Date(2025, 5, 21, 0, 0, 0); 
+    // FECHA DE INICIO: 21 de Junio de 2025
+    const fechaInicio = new Date(2025, 5, 21, 0, 0, 0); 
 
-function actualizarContador() {
-    const ahora = new Date();
-    const diferencia = ahora - fechaInicio;
+    function actualizarContador() {
+        const ahora = new Date();
+        const diferencia = ahora - fechaInicio;
 
-    // Conversiones de tiempo
-    const msPorSegundo = 1000;
-    const msPorMinuto = msPorSegundo * 60;
-    const msPorHora = msPorMinuto * 60;
-    const msPorDia = msPorHora * 24;
+        const d = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
+        const m = Math.floor((diferencia / (1000 * 60)) % 60);
+        const s = Math.floor((diferencia / 1000) % 60);
 
-    // Cálculo de días, horas, minutos y segundos
-    const d = Math.floor(diferencia / msPorDia);
-    const h = Math.floor((diferencia % msPorDia) / msPorHora);
-    const m = Math.floor((diferencia % msPorHora) / msPorMinuto);
-    const s = Math.floor((diferencia % msPorMinuto) / msPorSegundo);
+        document.getElementById("contador").innerHTML = 
+            d + " días " + h + " horas " + m + " minutos " + s + " segundos ❤️";
+    }
 
-    // Mostramos el resultado con el mismo formato que tenías
-    document.getElementById("contador").innerHTML = 
-        `${d} días ${h} horas ${m} minutos ${s} segundos ❤️`;
-}
+    setInterval(actualizarContador, 1000);
+    actualizarContador();
 
-// Actualizar cada segundo
-setInterval(actualizarContador, 1000);
-actualizarContador();
-
-// Función de corazones flotando (esta parte de tu código estaba perfecta)
-function crearCorazon(){
-    const corazon = document.createElement("div");
-    corazon.classList.add("corazon");
-    corazon.innerHTML = "❤️";
-    corazon.style.left = Math.random() * 100 + "vw";
-    corazon.style.animationDuration = (3 + Math.random() * 2) + "s";
-    document.body.appendChild(corazon);
-
-    setTimeout(() => {
-        corazon.remove();
-    }, 5000);
-}
-
-setInterval(crearCorazon, 500);
-</script>
+    function crearCorazon() {
+        const c = document.createElement("div");
+        c.classList.add("corazon-flotante");
